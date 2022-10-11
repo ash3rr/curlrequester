@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 )
@@ -42,14 +43,14 @@ func main() {
 
 	payloadBytes, err := json.Marshal(data)
 	if err != nil {
-		// handle err
+		fmt.Println("Failure : ", err)
 	}
 	body := bytes.NewReader(payloadBytes)
 
 	// The request is sent to the api url with the repo-slug name appended
 	req, err := http.NewRequest("POST", apiurl+appname+"/webhooks", body)
 	if err != nil {
-		// handle err
+		fmt.Println("Failure : ", err)
 	}
 	// set headers, grab token from env variable
 	req.Header.Set("Authorization", "Bearer "+token+"")
@@ -58,7 +59,7 @@ func main() {
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		// handle err
+		fmt.Println("Failure : ", err)
 	}
 	defer resp.Body.Close()
 
